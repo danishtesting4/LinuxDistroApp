@@ -54,6 +54,7 @@ object DistroInstallProfiles {
             desktopPackages = mapOf(
                 "xfce" to listOf("archlinux-keyring", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "dbus", "xterm"),
                 "gnome" to listOf("gnome", "gnome-terminal", "tigervnc", "dbus", "xterm"),
+                "gnome" to listOf("gnome", "gnome-terminal", "tigervnc", "dbus", "xterm"),
                 "kde" to listOf("plasma", "konsole", "tigervnc", "dbus", "xterm"),
                 "lxqt" to listOf("lxqt", "qterminal", "tigervnc", "dbus", "xterm"),
                 "mate" to listOf("mate", "mate-terminal", "tigervnc", "dbus", "xterm"),

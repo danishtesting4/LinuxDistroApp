@@ -1789,7 +1789,7 @@ fun getDistroList(): List<Distro> = listOf(
 )
 
 fun getDesktopEnvironments(): List<DesktopEnvironment> = listOf(
-    DesktopEnvironment("gnome", "GNOME", "Modern, user-friendly desktop with activities overview and gestures", R.drawable.ic_gnome, Color(0xFF1E88E5), "Full-featured (~2GB)", listOf("ubuntu", "fedora", "debian", "opensuse", "manjaro"),
+    DesktopEnvironment("gnome", "GNOME", "Modern, user-friendly desktop with activities overview and gestures", R.drawable.ic_gnome, Color(0xFF1E88E5), "Full-featured (~2GB)", listOf("ubuntu", "fedora", "debian", "opensuse", "manjaro", "arch"),
         launcherBinary = "/usr/bin/gnome-session", launchCommand = "exec dbus-run-session -- gnome-session"),
     DesktopEnvironment("kde", "KDE Plasma", "Highly customizable, feature-rich desktop with modern look", R.drawable.ic_kde, Color(0xFF3DAEE9), "Full-featured (~2GB)", listOf("arch", "manjaro", "opensuse", "fedora", "debian", "kali"),
         launcherBinary = "/usr/bin/startplasma-x11", launchCommand = "exec dbus-run-session -- startplasma-x11"),
