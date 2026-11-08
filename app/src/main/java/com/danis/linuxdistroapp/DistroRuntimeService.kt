@@ -93,9 +93,9 @@ class DistroRuntimeService : Service() {
         private const val NOTIFICATION_ID = 41
         private const val TAR_BLOCK_SIZE = 512
         private const val MINIMUM_FREE_BYTES = 2L * 1024 * 1024 * 1024
-        private const val NETWORK_TIMEOUT_MILLIS = 30_000
-        private const val MAX_DOWNLOAD_ATTEMPTS = 5
-        private const val DOWNLOAD_RETRY_DELAY_MILLIS = 1_000L
+    private const val NETWORK_TIMEOUT_MILLIS = 120_000
+    private const val MAX_DOWNLOAD_ATTEMPTS = 8
+    private const val DOWNLOAD_RETRY_DELAY_MILLIS = 3_000L
         private const val EXPECTED_LAYER_SIZE_BYTES = 100_000_000L
         private const val APT_LIST_MAX_AGE_MILLIS = 24L * 60 * 60 * 1000
         private val ARM64_IMAGE = PinnedImage(
