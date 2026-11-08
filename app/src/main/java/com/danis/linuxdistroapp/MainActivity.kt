@@ -136,7 +136,10 @@ data class DesktopEnvironment(
     val iconRes: Int,
     val color: Color,
     val size: String,
-    val recommendedFor: List<String>
+    val recommendedFor: List<String>,
+    val launcherBinary: String = "/usr/bin/startxfce4",
+    val launchCommand: String = "exec dbus-run-session -- startxfce4",
+    val installable: Boolean = true
 )
 
 // ---------- Screens ----------
@@ -182,9 +185,9 @@ fun AndistroApp() {
         }
     }
 
-    fun requestInstall(distroId: String = "debian") {
+    fun requestInstall(distroId: String = "debian", desktopEnvironment: String = "xfce") {
         pendingInstallDistroId = distroId
-        if (!DistroRuntimeService.install(context, distroId)) {
+        if (!DistroRuntimeService.install(context, distroId, desktopEnvironment)) {
             batteryDialogVisible = true
         }
     }
@@ -470,7 +473,7 @@ fun AndistroApp() {
                                                 desktopModeDialogVisible = true
                                             }
                                         } else {
-                                            requestInstall(distro.id)
+                                            requestInstall(distro.id, selectedDE?.id ?: "xfce")
                                         }
                                     },
                                     onCopyLogs = { copyRuntimeLog(context) },
@@ -1278,9 +1281,10 @@ fun DesktopEnvironmentSelectionScreen(
             items(desktopEnvironments) { de ->
                 DECard(
                     de = de,
-                    isInstallable = DistroInstallProfiles.get(distro.id) != null && de.id == "xfce",
-                    onClick = { onDESelected(de) }
-                )
+                isInstallable = DistroInstallProfiles.get(distro.id) != null &&
+                    distro.id in de.recommendedFor && de.installable,
+                onClick = { onDESelected(de) }
+            )
             }
         }
     }
@@ -1412,7 +1416,7 @@ fun DistroDetailScreen(
         !runtimeState.installing &&
         DistroRuntimeService.isDistroInstallPaused(context, distro.id)
     val canInstall = DistroInstallProfiles.get(distro.id) != null &&
-        (selectedDE?.id == "xfce" || isInstalled || isPaused)
+        (selectedDE != null && distro.id in selectedDE.recommendedFor && selectedDE.installable || isInstalled || isPaused)
     var uninstallDialogVisible by remember { mutableStateOf(false) }
     Column(modifier = Modifier.fillMaxSize()) {
         // Hero banner in brand color
@@ -1474,11 +1478,11 @@ fun DistroDetailScreen(
             if (!canInstall) {
                 Text(
                     text = if (distro.id == "debian") {
-                        "This desktop choice is catalog-only. The installer currently supports XFCE."
+                        "This desktop is not installable with this distribution in this build."
                     } else if (DistroInstallProfiles.get(distro.id) == null) {
                         "This distribution is catalog-only. No installer is available yet."
                     } else {
-                        "This desktop choice is catalog-only. The installer currently supports XFCE."
+                        "This desktop is not installable with this distribution in this build."
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1784,18 +1788,26 @@ fun getDistroList(): List<Distro> = listOf(
 )
 
 fun getDesktopEnvironments(): List<DesktopEnvironment> = listOf(
-    DesktopEnvironment("gnome", "GNOME", "Modern, user-friendly desktop with activities overview and gestures", R.drawable.ic_gnome, Color(0xFF1E88E5), "Full-featured (~2GB)", listOf("ubuntu", "fedora", "debian", "opensuse", "manjaro")),
-    DesktopEnvironment("kde", "KDE Plasma", "Highly customizable, feature-rich desktop with modern look", R.drawable.ic_kde, Color(0xFF3DAEE9), "Full-featured (~2GB)", listOf("arch", "manjaro", "opensuse", "fedora", "debian", "kali")),
+    DesktopEnvironment("gnome", "GNOME", "Modern, user-friendly desktop with activities overview and gestures", R.drawable.ic_gnome, Color(0xFF1E88E5), "Full-featured (~2GB)", listOf("ubuntu", "fedora", "debian", "opensuse", "manjaro"),
+        launcherBinary = "/usr/bin/gnome-session", launchCommand = "exec dbus-run-session -- gnome-session"),
+    DesktopEnvironment("kde", "KDE Plasma", "Highly customizable, feature-rich desktop with modern look", R.drawable.ic_kde, Color(0xFF3DAEE9), "Full-featured (~2GB)", listOf("arch", "manjaro", "opensuse", "fedora", "debian", "kali"),
+        launcherBinary = "/usr/bin/startplasma-x11", launchCommand = "exec dbus-run-session -- startplasma-x11"),
     DesktopEnvironment("xfce", "XFCE", "Lightweight, fast, and traditional desktop environment", R.drawable.ic_xfce, Color(0xFF4CAF50), "Lightweight (~500MB)", listOf("arch", "debian", "manjaro", "void", "alpine", "gentoo")),
-    DesktopEnvironment("lxqt", "LXQt", "Ultra-lightweight Qt-based desktop for older hardware", R.drawable.ic_lxqt, Color(0xFF009688), "Minimal (~300MB)", listOf("alpine", "void", "arch", "debian")),
-    DesktopEnvironment("mate", "MATE", "Traditional GNOME 2 fork, stable and familiar interface", R.drawable.ic_mate, Color(0xFF795548), "Medium (~800MB)", listOf("ubuntu", "debian", "arch", "manjaro", "fedora")),
-    DesktopEnvironment("cinnamon", "Cinnamon", "Traditional desktop with modern features, Linux Mint's flagship", R.drawable.ic_cinnamon, Color(0xFFE91E63), "Medium (~1GB)", listOf("ubuntu", "debian", "arch", "manjaro", "fedora")),
-    DesktopEnvironment("i3", "i3wm", "Tiling window manager for keyboard-driven workflows", R.drawable.ic_i3wm, Color(0xFF607D8B), "Minimal (~100MB)", listOf("arch", "manjaro", "void", "gentoo", "alpine")),
-    DesktopEnvironment("sway", "Sway", "Wayland-compatible tiling window manager (i3 clone)", R.drawable.ic_sway, Color(0xFF455A64), "Minimal (~150MB)", listOf("arch", "void", "gentoo", "fedora")),
-    DesktopEnvironment("hyprland", "Hyprland", "Dynamic tiling Wayland compositor with animations", R.drawable.ic_hyprland, Color(0xFF880E4F), "Lightweight (~200MB)", listOf("arch", "void", "gentoo")),
-    DesktopEnvironment("dwm", "dwm", "Minimal dynamic window manager for experts (suckless)", R.drawable.ic_dwm, Color(0xFF212121), "Tiny (~50MB)", listOf("arch", "void", "gentoo", "alpine"))
+    DesktopEnvironment("lxqt", "LXQt", "Ultra-lightweight Qt-based desktop for older hardware", R.drawable.ic_lxqt, Color(0xFF009688), "Minimal (~300MB)", listOf("alpine", "void", "arch", "debian"),
+        launcherBinary = "/usr/bin/startlxqt", launchCommand = "exec dbus-run-session -- startlxqt"),
+    DesktopEnvironment("mate", "MATE", "Traditional GNOME 2 fork, stable and familiar interface", R.drawable.ic_mate, Color(0xFF795548), "Medium (~800MB)", listOf("ubuntu", "debian", "arch", "manjaro", "fedora"),
+        launcherBinary = "/usr/bin/mate-session", launchCommand = "exec dbus-run-session -- mate-session"),
+    DesktopEnvironment("cinnamon", "Cinnamon", "Traditional desktop with modern features, Linux Mint's flagship", R.drawable.ic_cinnamon, Color(0xFFE91E63), "Medium (~1GB)", listOf("ubuntu", "debian", "arch", "manjaro", "fedora"),
+        launcherBinary = "/usr/bin/cinnamon-session", launchCommand = "exec dbus-run-session -- cinnamon-session"),
+    DesktopEnvironment("i3", "i3wm", "Tiling window manager for keyboard-driven workflows", R.drawable.ic_i3wm, Color(0xFF607D8B), "Minimal (~100MB)", listOf("arch", "manjaro", "void", "gentoo", "alpine"),
+        launcherBinary = "/usr/bin/i3", launchCommand = "exec dbus-run-session -- i3"),
+    DesktopEnvironment("sway", "Sway", "Wayland-compatible tiling window manager (i3 clone)", R.drawable.ic_sway, Color(0xFF455A64), "Minimal (~150MB)", listOf("arch", "void", "gentoo", "fedora"),
+        launcherBinary = "/usr/bin/sway", launchCommand = "exec dbus-run-session -- sway", installable = false),
+    DesktopEnvironment("hyprland", "Hyprland", "Dynamic tiling Wayland compositor with animations", R.drawable.ic_hyprland, Color(0xFF880E4F), "Lightweight (~200MB)", listOf("arch", "void", "gentoo"),
+        launcherBinary = "/usr/bin/Hyprland", launchCommand = "exec dbus-run-session -- Hyprland", installable = false),
+    DesktopEnvironment("dwm", "dwm", "Minimal dynamic window manager for experts (suckless)", R.drawable.ic_dwm, Color(0xFF212121), "Tiny (~50MB)", listOf("arch", "void", "gentoo", "alpine"),
+        launcherBinary = "/usr/bin/dwm", launchCommand = "exec dbus-run-session -- dwm")
 )
-
 fun getDistroBase(id: String): String = when (id) {
     "ubuntu", "kali" -> "Debian"
     "arch", "manjaro" -> "Arch"

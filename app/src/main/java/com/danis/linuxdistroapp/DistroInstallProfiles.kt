@@ -1,4 +1,4 @@
-package com.danis.linuxdistroapp
+﻿package com.danis.linuxdistroapp
 
 data class DistroInstallProfile(
     val id: String,
@@ -7,9 +7,12 @@ data class DistroInstallProfile(
     val lxcImagePath: String? = null,
     val preInstallCommand: String,
     val installCommand: String,
-    val desktopPackages: List<String>,
+    val desktopPackages: Map<String, List<String>>,
     val minimumFreeBytes: Long = 4L * 1024 * 1024 * 1024
-)
+) {
+    fun packagesFor(desktopEnvironment: String): List<String> =
+        desktopPackages[desktopEnvironment] ?: desktopPackages["xfce"] ?: emptyList()
+}
 
 object DistroInstallProfiles {
     private val profiles = listOf(
@@ -19,10 +22,15 @@ object DistroInstallProfiles {
             imageTag = "bookworm-slim",
             preInstallCommand = "apt-get -o Acquire::Retries=3 update",
             installCommand = "apt-get -o Acquire::Retries=3 install -y --no-install-recommends",
-            desktopPackages = listOf(
-                "dbus-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings",
-                "xfdesktop4", "xfce4-terminal", "thunar", "tigervnc-standalone-server",
-                "tigervnc-tools", "xterm", "xfonts-base"
+            desktopPackages = mapOf(
+                "xfce" to listOf("dbus-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop4", "xfce4-terminal", "thunar", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "gnome" to listOf("dbus-x11", "gnome-session", "gnome-shell", "gnome-terminal", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "kde" to listOf("dbus-x11", "plasma-workspace", "plasma-desktop", "konsole", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "lxqt" to listOf("dbus-x11", "lxqt", "lxqt-session", "qterminal", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "mate" to listOf("dbus-x11", "mate-desktop-environment", "mate-terminal", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "cinnamon" to listOf("dbus-x11", "cinnamon", "cinnamon-session", "gnome-terminal", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "i3" to listOf("dbus-x11", "i3", "i3status", "i3lock", "dmenu", "xterm", "tigervnc-standalone-server", "tigervnc-tools", "xfonts-base"),
+                "dwm" to listOf("dbus-x11", "dwm", "st", "dmenu", "xterm", "tigervnc-standalone-server", "tigervnc-tools", "xfonts-base")
             )
         ),
         DistroInstallProfile(
@@ -31,10 +39,11 @@ object DistroInstallProfiles {
             imageTag = "noble",
             preInstallCommand = "apt-get -o Acquire::Retries=3 update",
             installCommand = "apt-get -o Acquire::Retries=3 install -y --no-install-recommends",
-            desktopPackages = listOf(
-                "dbus-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings",
-                "xfdesktop4", "xfce4-terminal", "thunar", "tigervnc-standalone-server",
-                "tigervnc-tools", "xterm", "xfonts-base"
+            desktopPackages = mapOf(
+                "xfce" to listOf("dbus-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop4", "xfce4-terminal", "thunar", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "gnome" to listOf("dbus-x11", "gnome-session", "gnome-shell", "gnome-terminal", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "mate" to listOf("dbus-x11", "mate-desktop-environment", "mate-terminal", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "cinnamon" to listOf("dbus-x11", "cinnamon", "cinnamon-session", "gnome-terminal", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base")
             )
         ),
         DistroInstallProfile(
@@ -42,9 +51,15 @@ object DistroInstallProfiles {
             lxcImagePath = "archlinux/current",
             preInstallCommand = "pacman-key --init && pacman-key --populate archlinux",
             installCommand = "pacman -Syu --noconfirm --needed",
-            desktopPackages = listOf(
-                "archlinux-keyring", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings",
-                "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "dbus", "xterm"
+            desktopPackages = mapOf(
+                "xfce" to listOf("archlinux-keyring", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "dbus", "xterm"),
+                "gnome" to listOf("gnome", "gnome-terminal", "tigervnc", "dbus", "xterm"),
+                "kde" to listOf("plasma", "konsole", "tigervnc", "dbus", "xterm"),
+                "lxqt" to listOf("lxqt", "qterminal", "tigervnc", "dbus", "xterm"),
+                "mate" to listOf("mate", "mate-terminal", "tigervnc", "dbus", "xterm"),
+                "cinnamon" to listOf("cinnamon", "gnome-terminal", "tigervnc", "dbus", "xterm"),
+                "i3" to listOf("i3-wm", "i3status", "i3lock", "dmenu", "xterm", "tigervnc", "dbus"),
+                "dwm" to listOf("dwm", "st", "dmenu", "xterm", "tigervnc", "dbus")
             )
         ),
         DistroInstallProfile(
@@ -53,9 +68,12 @@ object DistroInstallProfiles {
             imageTag = "latest",
             preInstallCommand = "",
             installCommand = "dnf -y --setopt=install_weak_deps=False install",
-            desktopPackages = listOf(
-                "dbus-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings",
-                "xfdesktop", "xfce4-terminal", "thunar", "tigervnc-server", "xterm"
+            desktopPackages = mapOf(
+                "xfce" to listOf("dbus-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop", "xfce4-terminal", "thunar", "tigervnc-server", "xterm"),
+                "gnome" to listOf("gnome-session", "gnome-shell", "gnome-terminal", "tigervnc-server", "xterm", "dbus-x11"),
+                "kde" to listOf("plasma-workspace", "plasma-desktop", "konsole", "tigervnc-server", "xterm", "dbus-x11"),
+                "mate" to listOf("mate-desktop", "mate-terminal", "tigervnc-server", "xterm", "dbus-x11"),
+                "cinnamon" to listOf("cinnamon", "gnome-terminal", "tigervnc-server", "xterm", "dbus-x11")
             )
         ),
         DistroInstallProfile(
@@ -64,10 +82,10 @@ object DistroInstallProfiles {
             imageTag = "latest",
             preInstallCommand = "apt-get -o Acquire::Retries=3 update",
             installCommand = "apt-get -o Acquire::Retries=3 install -y --no-install-recommends",
-            desktopPackages = listOf(
-                "dbus-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings",
-                "xfdesktop4", "xfce4-terminal", "thunar", "tigervnc-standalone-server",
-                "tigervnc-tools", "xterm", "xfonts-base"
+            desktopPackages = mapOf(
+                "xfce" to listOf("dbus-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop4", "xfce4-terminal", "thunar", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "gnome" to listOf("dbus-x11", "gnome-session", "gnome-shell", "gnome-terminal", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base"),
+                "kde" to listOf("dbus-x11", "plasma-workspace", "plasma-desktop", "konsole", "tigervnc-standalone-server", "tigervnc-tools", "xterm", "xfonts-base")
             )
         ),
         DistroInstallProfile(
@@ -76,9 +94,11 @@ object DistroInstallProfiles {
             imageTag = "3.23",
             preInstallCommand = "apk update",
             installCommand = "apk add",
-            desktopPackages = listOf(
-                "dbus", "xfce4-session", "xfce4-panel", "xfce4-wm", "xfce4-settings",
-                "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "xterm"
+            desktopPackages = mapOf(
+                "xfce" to listOf("dbus", "xfce4-session", "xfce4-panel", "xfce4-wm", "xfce4-settings", "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "xterm"),
+                "lxqt" to listOf("dbus", "lxqt", "qterminal", "tigervnc", "xterm"),
+                "i3" to listOf("dbus", "i3wm", "i3status", "xterm", "tigervnc"),
+                "dwm" to listOf("dbus", "dwm", "st", "dmenu", "xterm", "tigervnc")
             )
         ),
         DistroInstallProfile(
@@ -87,9 +107,13 @@ object DistroInstallProfiles {
             imageTag = "latest",
             preInstallCommand = "pacman-key --init && pacman-key --populate manjaro",
             installCommand = "pacman -Syu --noconfirm --needed",
-            desktopPackages = listOf(
-                "manjaro-keyring", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings",
-                "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "dbus", "xterm"
+            desktopPackages = mapOf(
+                "xfce" to listOf("manjaro-keyring", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "dbus", "xterm"),
+                "gnome" to listOf("gnome", "gnome-terminal", "tigervnc", "dbus", "xterm"),
+                "kde" to listOf("plasma", "konsole", "tigervnc", "dbus", "xterm"),
+                "mate" to listOf("mate", "mate-terminal", "tigervnc", "dbus", "xterm"),
+                "cinnamon" to listOf("cinnamon", "gnome-terminal", "tigervnc", "dbus", "xterm"),
+                "i3" to listOf("i3-wm", "i3status", "i3lock", "dmenu", "xterm", "tigervnc", "dbus")
             )
         ),
         DistroInstallProfile(
@@ -98,9 +122,13 @@ object DistroInstallProfiles {
             imageTag = "latest",
             preInstallCommand = "zypper --non-interactive refresh",
             installCommand = "zypper --non-interactive install --no-recommends",
-            desktopPackages = listOf(
-                "dbus-1-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings",
-                "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "xterm"
+            desktopPackages = mapOf(
+                "xfce" to listOf("dbus-1-x11", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "xterm"),
+                "gnome" to listOf("gnome-session", "gnome-shell", "gnome-terminal", "tigervnc", "xterm"),
+                "kde" to listOf("plasma5-workspace", "konsole", "tigervnc", "xterm"),
+                "mate" to listOf("mate-session", "mate-terminal", "tigervnc", "xterm"),
+                "cinnamon" to listOf("cinnamon", "gnome-terminal", "tigervnc", "xterm"),
+                "i3" to listOf("i3", "i3status", "xterm", "tigervnc")
             )
         ),
         DistroInstallProfile(
@@ -108,9 +136,15 @@ object DistroInstallProfiles {
             lxcImagePath = "voidlinux/current",
             preInstallCommand = "",
             installCommand = "xbps-install -Sy",
-            desktopPackages = listOf(
-                "dbus", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings",
-                "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "xterm"
+            desktopPackages = mapOf(
+                "xfce" to listOf("dbus", "xfce4-session", "xfce4-panel", "xfwm4", "xfce4-settings", "xfdesktop", "xfce4-terminal", "thunar", "tigervnc", "xterm"),
+                "gnome" to listOf("gnome", "gnome-terminal", "tigervnc", "dbus", "xterm"),
+                "kde" to listOf("plasma", "konsole", "tigervnc", "dbus", "xterm"),
+                "lxqt" to listOf("lxqt", "qterminal", "tigervnc", "dbus", "xterm"),
+                "mate" to listOf("mate", "mate-terminal", "tigervnc", "dbus", "xterm"),
+                "cinnamon" to listOf("cinnamon", "gnome-terminal", "tigervnc", "dbus", "xterm"),
+                "i3" to listOf("i3", "i3status", "xterm", "tigervnc", "dbus"),
+                "dwm" to listOf("dwm", "st", "dmenu", "xterm", "tigervnc", "dbus")
             )
         ),
         DistroInstallProfile(
@@ -119,7 +153,13 @@ object DistroInstallProfiles {
             imageTag = "latest",
             preInstallCommand = "emerge-webrsync",
             installCommand = "MAKEOPTS=-j1 emerge --ask=n --jobs=1 --load-average=1",
-            desktopPackages = listOf("xfce-base/xfce4-meta", "net-misc/tigervnc", "x11-terms/xterm"),
+            desktopPackages = mapOf(
+                "xfce" to listOf("xfce-base/xfce4-meta", "net-misc/tigervnc", "x11-terms/xterm"),
+                "gnome" to listOf("gnome-base/gnome", "x11-terms/gnome-terminal", "net-misc/tigervnc", "x11-terms/xterm"),
+                "kde" to listOf("kde-plasma/plasma-meta", "kde-apps/konsole", "net-misc/tigervnc", "x11-terms/xterm"),
+                "i3" to listOf("x11-wm/i3", "x11-misc/i3status", "x11-terms/xterm", "net-misc/tigervnc"),
+                "dwm" to listOf("x11-wm/dwm", "x11-terms/st", "x11-misc/dmenu", "x11-terms/xterm", "net-misc/tigervnc")
+            ),
             minimumFreeBytes = 8L * 1024 * 1024 * 1024
         )
     )
