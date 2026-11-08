@@ -139,7 +139,8 @@ data class DesktopEnvironment(
     val recommendedFor: List<String>,
     val launcherBinary: String = "/usr/bin/startxfce4",
     val launchCommand: String = "exec dbus-run-session -- startxfce4",
-    val installable: Boolean = true
+    val installable: Boolean = true,
+    val isWayland: Boolean = false
 )
 
 // ---------- Screens ----------
@@ -1802,9 +1803,9 @@ fun getDesktopEnvironments(): List<DesktopEnvironment> = listOf(
     DesktopEnvironment("i3", "i3wm", "Tiling window manager for keyboard-driven workflows", R.drawable.ic_i3wm, Color(0xFF607D8B), "Minimal (~100MB)", listOf("arch", "manjaro", "void", "gentoo", "alpine"),
         launcherBinary = "/usr/bin/i3", launchCommand = "exec dbus-run-session -- i3"),
     DesktopEnvironment("sway", "Sway", "Wayland-compatible tiling window manager (i3 clone)", R.drawable.ic_sway, Color(0xFF455A64), "Minimal (~150MB)", listOf("arch", "void", "gentoo", "fedora"),
-        launcherBinary = "/usr/bin/sway", launchCommand = "exec dbus-run-session -- sway", installable = false),
+        launcherBinary = "/usr/bin/sway", launchCommand = "exec dbus-run-session -- sway", installable = true, isWayland = true),
     DesktopEnvironment("hyprland", "Hyprland", "Dynamic tiling Wayland compositor with animations", R.drawable.ic_hyprland, Color(0xFF880E4F), "Lightweight (~200MB)", listOf("arch", "void", "gentoo"),
-        launcherBinary = "/usr/bin/Hyprland", launchCommand = "exec dbus-run-session -- Hyprland", installable = false),
+        launcherBinary = "/usr/bin/Hyprland", launchCommand = "exec dbus-run-session -- Hyprland", installable = true, isWayland = true),
     DesktopEnvironment("dwm", "dwm", "Minimal dynamic window manager for experts (suckless)", R.drawable.ic_dwm, Color(0xFF212121), "Tiny (~50MB)", listOf("arch", "void", "gentoo", "alpine"),
         launcherBinary = "/usr/bin/dwm", launchCommand = "exec dbus-run-session -- dwm")
 )

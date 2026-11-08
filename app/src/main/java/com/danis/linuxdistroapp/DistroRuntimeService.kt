@@ -1447,9 +1447,81 @@ class DistroRuntimeService : Service() {
         "dwm" -> "dwm"
         else -> "XFCE"
     }
+    private fun isWaylandDesktop(desktopEnvironment: String): Boolean =
+        desktopEnvironment == "sway" || desktopEnvironment == "hyprland"
+
+
+    private suspend fun startWaylandVncDesktop() {
+        check(isDistroInstalled(this, currentDistroId)) {
+            "Install $currentDistroId + $currentDesktopEnvironment before starting the desktop."
+        }
+        prepareRuntimeBinaries()
+        if (desktopProcess?.isAlive == true) return
+
+        val password = generateVncPassword()
+        val compositor = when (currentDesktopEnvironment) {
+            "sway" -> "sway"
+            "hyprland" -> "Hyprland"
+            else -> "sway"
+        }
+        val script = rootfs.resolve("root/.vnc/start-wayland.sh")
+        script.parentFile?.mkdirs()
+        script.writeText(
+            "#!/bin/sh\n" +
+                "export WLR_BACKENDS=headless\n" +
+                "export WLR_LIBINPUT_NO_DEVICES=1\n" +
+                "export WLR_RENDERER=pixman\n" +
+                "export MESA_LOADER_DRIVER_OVERRIDE=llvmpipe\n" +
+                "export XDG_RUNTIME_DIR=/tmp/xdg-runtime\n" +
+                "mkdir -p \"\$XDG_RUNTIME_DIR\"\n" +
+                "chmod 700 \"\$XDG_RUNTIME_DIR\"\n" +
+                "export WAYLAND_DISPLAY=wayland-1\n" +
+                "$compositor >/tmp/$currentDesktopEnvironment.log 2>&1 &\n" +
+                "sleep 4\n" +
+                "exec wayvnc --password=$password 0.0.0.0 5901\n"
+        )
+        script.setExecutable(true, true)
+
+        val vncServer = rootfs.resolve("usr/bin/wayvnc")
+        check(vncServer.isFile) {
+            "$currentDistroId does not have wayvnc installed. Reinstall with the Wayland desktop packages."
+        }
+        check(rootfs.resolve("usr/bin/$compositor").isFile || rootfs.resolve("usr/bin/${compositor.lowercase()}").isFile) {
+            "$currentDistroId does not have the $currentDesktopEnvironment compositor installed."
+        }
+
+        desktopProcess = ProcessBuilder(
+            prootArguments(
+                listOf(
+                    "/bin/sh", "/root/.vnc/start-wayland.sh"
+                )
+            )
+        ).redirectErrorStream(true)
+            .redirectOutput(ProcessBuilder.Redirect.appendTo(File(filesDir, "$currentDesktopEnvironment-wayland-vnc.log")))
+            .apply {
+                environment()["PROOT_LOADER"] = loader.absolutePath
+                environment()["PROOT_TMP_DIR"] = prepareProotTempDirectories().absolutePath
+            }.start()
+        kotlinx.coroutines.delay(6000)
+        check(desktopProcess?.isAlive == true) {
+            "The Wayland desktop exited during startup. This is experimental; check $currentDesktopEnvironment-wayland-vnc.log. Wayland VNC may not be supported on this device yet."
+        }
+
+        DistroRuntimeState.state.value = DistroRuntimeState.state.value.copy(
+            message = "${desktopDisplayName(currentDesktopEnvironment)} is running on 127.0.0.1:5901",
+            desktopRunning = true,
+            displayMode = DesktopDisplayMode.IN_APP_VNC,
+            vncPassword = password,
+            error = null
+        )
+    }
 
     private suspend fun startVncDesktop() {
         check(isDistroInstalled(this, currentDistroId)) {
+        if (isWaylandDesktop(currentDesktopEnvironment)) {
+            startWaylandVncDesktop()
+            return
+        }
             "Install $currentDistroId + $currentDesktopEnvironment before starting the desktop."
         }
         prepareRuntimeBinaries()
@@ -1509,6 +1581,7 @@ class DistroRuntimeService : Service() {
 
     private suspend fun startTermuxX11Desktop() {
         check(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        check(!isWaylandDesktop(currentDesktopEnvironment)) { "$currentDesktopEnvironment is Wayland-only and cannot run under Termux:X11. Use the in-app viewer." }
             "Termux:X11 requires Android 8.0 or later."
         }
         check(isDistroInstalled(this, currentDistroId)) {
