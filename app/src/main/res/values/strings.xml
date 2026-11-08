@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Andistro</string>
+    <string name="title_activity_main">Andistro</string>
+    <string name="btn_install">Install Distro</string>
+    <string name="btn_run">Run</string>
+    <string name="txt_terminal">Terminal</string>
+    <string name="txt_gui">GUI/Desktop</string>
+
+    <!-- Distro Names -->
+    <string name="distro_ubuntu">Ubuntu</string>
+    <string name="distro_arch">Arch Linux</string>
+    <string name="distro_fedora">Fedora</string>
+    <string name="distro_debian">Debian</string>
+    <string name="distro_kali">Kali Linux</string>
+    <string name="distro_alpine">Alpine Linux</string>
+    <string name="distro_manjaro">Manjaro</string>
+    <string name="distro_opensuse">openSUSE</string>
+    <string name="distro_void">Void Linux</string>
+    <string name="distro_gentoo">Gentoo</string>
+
+    <!-- Distro Descriptions -->
+    <string name="desc_ubuntu">Popular, user-friendly distro with excellent community support and LTS releases</string>
+    <string name="desc_arch">Lightweight, rolling release distro for advanced users who want full control</string>
+    <string name="desc_fedora">Cutting-edge distro with latest technologies, backed by Red Hat</string>
+    <string name="desc_debian">Rock-solid stable foundation, parent of Ubuntu and many other distros</string>
+    <string name="desc_kali">Penetration testing and security auditing distro with 600+ tools</string>
+    <string name="desc_alpine">Tiny, security-focused distro using musl libc and busybox (~5MB)</string>
+    <string name="desc_manjaro">User-friendly Arch-based distro with graphical installer and held-back updates</string>
+    <string name="desc_opensuse">Professional-grade distro with YaST config tool, Leap (stable) and Tumbleweed (rolling)</string>
+    <string name="desc_void">Independent rolling distro with runit init, XBPS package manager, and musl/glibc options</string>
+    <string name="desc_gentoo">Source-based distro with extreme customization via USE flags and Portage</string>
+
+    <!-- Categories -->
+    <string name="cat_beginner">Beginner Friendly</string>
+    <string name="cat_advanced">Advanced</string>
+    <string name="cat_developer">Developer</string>
+    <string name="cat_stable">Stable</string>
+    <string name="cat_security">Security</string>
+    <string name="cat_minimal">Minimal</string>
+    <string name="cat_arch_based">Arch-based</string>
+    <string name="cat_enterprise">Enterprise</string>
+    <string name="cat_independent">Independent</string>
+    <string name="cat_expert">Expert</string>
+
+    <!-- UI Labels -->
+    <string name="choose_distro">Choose a Distribution</string>
+    <string name="choose_distro_subtitle">Select a Linux distro to install and run on your device</string>
+    <string name="installed">Installed</string>
+    <string name="install_button">Install</string>
+    <string name="open_button">Open</string>
+    <string name="category">Category</string>
+    <string name="base">Base</string>
+    <string name="package_manager">Package Manager</string>
+    <string name="init_system">Init System</string>
+    <string name="architecture">Architecture</string>
+</resources>

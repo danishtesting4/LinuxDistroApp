@@ -1,0 +1,22 @@
+<resources>
+    <!-- Material 3 Theme -->
+    <style name="Theme.Andistro" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary color - the main brand color -->
+        <item name="colorPrimary">#216B59</item>
+        <!-- Secondary color - used for accent elements -->
+        <item name="colorSecondary">#9C4F3A</item>
+        <!-- Background color - page backgrounds -->
+        <item name="android:colorBackground">#F7F9F5</item>
+        <item name="android:statusBarColor">#216B59</item>
+        <item name="android:navigationBarColor">#F7F9F5</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <!-- Surface color - cards, dialogs, buttons -->
+        <item name="colorSurface">#F7F9F5</item>
+        <!-- On colors - text on top of surface/background -->
+        <item name="colorOnBackground">#171D19</item>
+        <item name="colorOnSurface">#171D19</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+    </style>
+</resources>

@@ -1,0 +1,2 @@
+C:\Users\danis\LinuxDistroApp\app\.cxx\Debug\12271r3v\arm64-v8a\proot-generated\loader-info.c.rule
+C:\Users\danis\LinuxDistroApp\app\build\generated\prootSources\proot\loader\assembly.S

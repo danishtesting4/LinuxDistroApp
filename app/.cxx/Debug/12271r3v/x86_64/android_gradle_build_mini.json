@@ -1,0 +1,39 @@
+{
+  "buildFiles": [
+    "C:\\Users\\danis\\LinuxDistroApp\\app\\src\\main\\cpp\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\danis\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\Users\\danis\\LinuxDistroApp\\app\\.cxx\\Debug\\12271r3v\\x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\danis\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\Users\\danis\\LinuxDistroApp\\app\\.cxx\\Debug\\12271r3v\\x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "proot::@6890427a1f51a3e7e1df": {
+      "artifactName": "proot",
+      "abi": "x86_64",
+      "output": "C:\\Users\\danis\\LinuxDistroApp\\app\\build\\intermediates\\cxx\\Debug\\12271r3v\\obj\\x86_64\\libproot.so",
+      "runtimeFiles": []
+    },
+    "proot_loader::@6890427a1f51a3e7e1df": {
+      "artifactName": "proot_loader",
+      "abi": "x86_64",
+      "output": "C:\\Users\\danis\\LinuxDistroApp\\app\\build\\intermediates\\cxx\\Debug\\12271r3v\\obj\\x86_64\\libproot_loader.so",
+      "runtimeFiles": []
+    },
+    "talloc::@6890427a1f51a3e7e1df": {
+      "artifactName": "talloc",
+      "abi": "x86_64",
+      "output": "C:\\Users\\danis\\LinuxDistroApp\\app\\.cxx\\Debug\\12271r3v\\x86_64\\libtalloc.a",
+      "runtimeFiles": []
+    }
+  }
+}

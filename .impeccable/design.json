@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-07T08:40:00Z",
+  "title": "Design System: Andistro",
+  "extensions": {
+    "colorMeta": {
+      "evergreen-primary": {
+        "role": "primary",
+        "displayName": "Deep Evergreen",
+        "canonical": "#216B59",
+        "tonalRamp": ["#0B2C24", "#15473B", "#216B59", "#39816E", "#5CA18B", "#8ED6B7", "#C8EFDF", "#F2FBF6"]
+      },
+      "mint-container": {
+        "role": "primary",
+        "displayName": "Soft Mint",
+        "canonical": "#C8EFDF",
+        "tonalRamp": ["#103529", "#1C5140", "#34745D", "#57977B", "#83BBA0", "#AEDAC5", "#C8EFDF", "#F4FCF8"]
+      },
+      "coral-tertiary": {
+        "role": "tertiary",
+        "displayName": "Warm Coral",
+        "canonical": "#9C4F3A",
+        "tonalRamp": ["#35100A", "#632216", "#9C4F3A", "#B96D56", "#D18D77", "#F0AA94", "#FFDAD0", "#FFF2ED"]
+      },
+      "coral-container": {
+        "role": "tertiary",
+        "displayName": "Coral Container",
+        "canonical": "#FFDAD0",
+        "tonalRamp": ["#45190F", "#713323", "#A45B45", "#C27A62", "#D99982", "#F0BDAE", "#FFDAD0", "#FFF4F0"]
+      },
+      "evergreen-mark": {
+        "role": "primary",
+        "displayName": "Evergreen Mark",
+        "canonical": "#103D34",
+        "tonalRamp": ["#071F1A", "#103D34", "#20574B", "#397568", "#5C9888", "#87B9A9", "#B8D7CC", "#F2F9F6"]
+      },
+      "light-background": {
+        "role": "neutral",
+        "displayName": "Light Background",
+        "canonical": "#F7F9F5",
+        "tonalRamp": ["#171D19", "#303832", "#48514A", "#687169", "#8C958D", "#B2BAB3", "#D7DED8", "#F7F9F5"]
+      },
+      "light-surface-variant": {
+        "role": "neutral",
+        "displayName": "Light Leaf Surface",
+        "canonical": "#E1E9E3",
+        "tonalRamp": ["#1B221D", "#353D37", "#515A53", "#727B74", "#929C94", "#B2BDB5", "#CDD7D0", "#E1E9E3"]
+      },
+      "light-text": {
+        "role": "neutral",
+        "displayName": "Light Ink",
+        "canonical": "#171D19",
+        "tonalRamp": ["#111713", "#171D19", "#303832", "#48514A", "#687169", "#8C958D", "#B2BAB3", "#F7F9F5"]
+      },
+      "light-secondary-text": {
+        "role": "neutral",
+        "displayName": "Light Secondary Ink",
+        "canonical": "#414B45",
+        "tonalRamp": ["#1A211C", "#303A33", "#414B45", "#5D685F", "#7A857D", "#9AA59D", "#BCC6BE", "#F3F7F3"]
+      },
+      "light-outline": {
+        "role": "neutral",
+        "displayName": "Light Outline",
+        "canonical": "#717B74",
+        "tonalRamp": ["#202722", "#3A433C", "#555F58", "#717B74", "#89938B", "#A5AFA7", "#C5CEC7", "#F2F5F2"]
+      },
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "Dark Background",
+        "canonical": "#101713",
+        "tonalRamp": ["#101713", "#1B231D", "#303832", "#48514A", "#687169", "#8C958D", "#B2BAB3", "#F7F9F5"]
+      },
+      "dark-surface-variant": {
+        "role": "neutral",
+        "displayName": "Dark Leaf Surface",
+        "canonical": "#404B44",
+        "tonalRamp": ["#151C17", "#28312B", "#404B44", "#59655D", "#758179", "#96A199", "#BAC4BC", "#F0F4F0"]
+      },
+      "dark-selected-container": {
+        "role": "primary",
+        "displayName": "Dark Selected Evergreen",
+        "canonical": "#15513F",
+        "tonalRamp": ["#071F1A", "#103D34", "#15513F", "#2B6A55", "#4D8A71", "#7AB39A", "#B6DBC9", "#F0FAF5"]
+      },
+      "dark-text": {
+        "role": "neutral",
+        "displayName": "Dark Mist",
+        "canonical": "#E0E9E2",
+        "tonalRamp": ["#101713", "#263029", "#414B45", "#657068", "#89948C", "#AAB5AD", "#C7D1C9", "#E0E9E2"]
+      },
+      "dark-secondary-text": {
+        "role": "neutral",
+        "displayName": "Dark Secondary Mist",
+        "canonical": "#C0CCC4",
+        "tonalRamp": ["#111813", "#28312B", "#414B45", "#626D65", "#849087", "#A5B1A8", "#C0CCC4", "#EDF3EE"]
+      },
+      "dark-outline": {
+        "role": "neutral",
+        "displayName": "Dark Outline",
+        "canonical": "#8A978E",
+        "tonalRamp": ["#141A16", "#2B332D", "#465149", "#606B63", "#78847B", "#8A978E", "#AFBAB2", "#E7EEE8"]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Screen titles and first-level orientation."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Environment names and state panels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Catalog descriptions and task guidance."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Navigation and compact state labels."
+      }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "expanded-navigation",
+        "value": "600dp"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "One clear action for the next supported step.",
+      "html": "<button class=\"ds-button-primary\">Browse distributions</button>",
+      "css": ".ds-button-primary { min-height: 40px; padding: 0 24px; border: 0; border-radius: 20px; background: #216B59; color: #FFFFFF; font: 500 14px Roboto, sans-serif; } .ds-button-primary:hover { background: #1B5B4B; } .ds-button-primary:focus-visible { outline: 3px solid #9C4F3A; outline-offset: 2px; } .ds-button-primary:active { background: #15473B; }"
+    },
+    {
+      "name": "Tonal Button",
+      "kind": "button",
+      "refersTo": "button-tonal",
+      "description": "Secondary actions such as managing an installed environment.",
+      "html": "<button class=\"ds-button-tonal\">Manage</button>",
+      "css": ".ds-button-tonal { min-height: 40px; padding: 0 20px; border: 0; border-radius: 20px; background: #C8EFDF; color: #171D19; font: 500 14px Roboto, sans-serif; } .ds-button-tonal:hover { background: #B5E4D0; } .ds-button-tonal:focus-visible { outline: 3px solid #216B59; outline-offset: 2px; } .ds-button-tonal:active { background: #AEDAC5; } @media (prefers-color-scheme: dark) { .ds-button-tonal { background: #15513F; color: #E0E9E2; } }"
+    },
+    {
+      "name": "Environment Card",
+      "kind": "card",
+      "refersTo": "environment-card",
+      "description": "A compact installed environment row with a written runtime state.",
+      "html": "<article class=\"ds-environment-card\"><strong>Debian</strong><span>XFCE · Installed</span><button>Open desktop</button></article>",
+      "css": ".ds-environment-card { display: grid; gap: 12px; padding: 20px; border-radius: 16px; background: #E1E9E3; color: #171D19; font: 400 16px Roboto, sans-serif; } .ds-environment-card span { color: #414B45; font-size: 14px; } .ds-environment-card button { justify-self: start; min-height: 40px; border: 1px solid #717B74; border-radius: 20px; padding: 0 16px; background: transparent; color: #216B59; font: 500 14px Roboto, sans-serif; } .ds-environment-card button:focus-visible { outline: 3px solid #9C4F3A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Availability Row",
+      "kind": "custom",
+      "refersTo": "environment-card",
+      "description": "A selectable catalog row that pairs a distro name with install availability.",
+      "html": "<button class=\"ds-catalog-row\"><strong>Debian</strong><span>Installable</span></button>",
+      "css": ".ds-catalog-row { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 64px; padding: 16px; border: 0; border-radius: 16px; background: #E1E9E3; color: #171D19; text-align: left; font: 500 16px Roboto, sans-serif; } .ds-catalog-row span { color: #216B59; font: 500 12px Roboto, sans-serif; } .ds-catalog-row:focus-visible { outline: 3px solid #9C4F3A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Desktop Keyboard Input",
+      "kind": "input",
+      "refersTo": "input-outlined",
+      "description": "Material 3 outlined text entry for sending keyboard input to the desktop.",
+      "html": "<label class=\"ds-input-label\">Send text<input class=\"ds-input\" type=\"text\" placeholder=\"Type to desktop\"></label>",
+      "css": ".ds-input-label { display: grid; gap: 8px; color: #414B45; font: 500 14px Roboto, sans-serif; } .ds-input { min-height: 48px; padding: 0 16px; border: 1px solid #717B74; border-radius: 4px; background: #F7F9F5; color: #171D19; font: 400 16px Roboto, sans-serif; } .ds-input:focus { border: 2px solid #216B59; outline: none; } .ds-input:disabled { border-color: #C1CAC3; color: #717B74; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Three labeled destinations adapt from bottom bar to rail.",
+      "html": "<nav class=\"ds-navigation\"><button aria-current=\"page\">Home</button><button>Distros</button><button>Desktop</button></nav>",
+      "css": ".ds-navigation { display: flex; justify-content: space-around; padding: 8px; background: #F7F9F5; } .ds-navigation button { min-width: 64px; min-height: 48px; border: 0; border-radius: 24px; background: transparent; color: #414B45; font: 500 14px Roboto, sans-serif; } .ds-navigation button[aria-current=page] { background: #C8EFDF; color: #171D19; } .ds-navigation button:focus-visible { outline: 3px solid #9C4F3A; outline-offset: 2px; } @media (prefers-color-scheme: dark) { .ds-navigation { background: #101713; } .ds-navigation button { color: #C0CCC4; } .ds-navigation button[aria-current=page] { background: #15513F; color: #E0E9E2; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Clear Paths, Clear Status",
+    "overview": "Andistro is a native Android manager for browsing and operating Linux environments. Its identity is an evergreen field with a mint route-shaped A and a small coral node. The interface stays recognizably Material 3; the brand comes from its own name, mark, and restrained color roles rather than borrowed artwork.\n\nThe structure follows familiar Android manager conventions: an app bar, scannable catalog rows, a focused primary action, and navigation that adapts to width. ReVanced Manager, Andronix, and Vendetta Launcher are high-level references only; Andistro does not copy their exact screens or assets.",
+    "keyCharacteristics": [
+      "Original evergreen, mint, and coral identity",
+      "State-first environment management",
+      "Native Material 3 controls and responsive navigation"
+    ],
+    "rules": [
+      {
+        "name": "The State-First Color Rule",
+        "body": "Color reinforces a written availability or runtime label; it never carries status alone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tonal-Only Depth Rule",
+        "body": "Do not add a shadow to a resting list row or environment container.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use Material 3 navigation and controls appropriate to the available width.",
+      "Do pair every availability color with a written status.",
+      "Do keep Andistro's name, vector mark, and color identity original."
+    ],
+    "donts": [
+      "Don't copy another launcher's exact layout, logo, or artwork.",
+      "Don't indicate installation support only through color.",
+      "Don't add decorative shadows to flat environment rows."
+    ]
+  }
+}

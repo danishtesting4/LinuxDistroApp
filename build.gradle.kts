@@ -1,0 +1,1 @@
+// Project-level build.gradle.kts - minimal, plugin management in settings.gradle.kts

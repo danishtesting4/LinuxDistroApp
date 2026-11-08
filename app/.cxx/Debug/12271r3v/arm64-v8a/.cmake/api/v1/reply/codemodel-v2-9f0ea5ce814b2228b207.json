@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "linux_distro_runtime",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "proot::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-proot-Debug-f28881ebe66057853db3.json",
+					"name" : "proot",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "proot_loader::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-proot_loader-Debug-51389f7e5a3dc565aa51.json",
+					"name" : "proot_loader",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "talloc::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-talloc-Debug-72771b25d9dc331f2e27.json",
+					"name" : "talloc",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/danis/LinuxDistroApp/app/.cxx/Debug/12271r3v/arm64-v8a",
+		"source" : "C:/Users/danis/LinuxDistroApp/app/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

@@ -1,0 +1,5 @@
+C:/Users/danis/LinuxDistroApp/app/.cxx/Debug/12271r3v/x86_64/CMakeFiles/talloc.dir
+C:/Users/danis/LinuxDistroApp/app/.cxx/Debug/12271r3v/x86_64/CMakeFiles/proot_loader.dir
+C:/Users/danis/LinuxDistroApp/app/.cxx/Debug/12271r3v/x86_64/CMakeFiles/proot.dir
+C:/Users/danis/LinuxDistroApp/app/.cxx/Debug/12271r3v/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/danis/LinuxDistroApp/app/.cxx/Debug/12271r3v/x86_64/CMakeFiles/rebuild_cache.dir

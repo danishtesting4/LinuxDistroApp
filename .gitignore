@@ -1,0 +1,29 @@
+﻿# Gradle / build
+.gradle/
+build/
+app/build/
+*/build/
+local.properties
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Native build cache
+.cxx/
+# Unrelated cloned repo
+valenced-unofficial-all-repos/

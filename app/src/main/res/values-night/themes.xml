@@ -1,0 +1,16 @@
+<resources>
+    <style name="Theme.Andistro" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#8ED6B7</item>
+        <item name="colorSecondary">#FFB59F</item>
+        <item name="android:colorBackground">#101713</item>
+        <item name="android:statusBarColor">#101713</item>
+        <item name="android:navigationBarColor">#101713</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="colorSurface">#101713</item>
+        <item name="colorOnBackground">#E0E9E2</item>
+        <item name="colorOnSurface">#E0E9E2</item>
+        <item name="colorOnPrimary">#00382B</item>
+        <item name="colorOnSecondary">#5F1608</item>
+    </style>
+</resources>
