@@ -53,6 +53,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -186,9 +187,9 @@ fun AndistroApp() {
         }
     }
 
-    fun requestInstall(distroId: String = "debian", desktopEnvironment: String = "xfce") {
+    fun requestInstall(distroId: String = "debian", desktopEnvironment: String = "xfce", tier: String = "standard") {
         pendingInstallDistroId = distroId
-        if (!DistroRuntimeService.install(context, distroId, desktopEnvironment)) {
+        if (!DistroRuntimeService.install(context, distroId, desktopEnvironment, tier)) {
             batteryDialogVisible = true
         }
     }
@@ -465,7 +466,7 @@ fun AndistroApp() {
                                     distro = distro,
                                     selectedDE = selectedDE,
                                     runtimeState = distroRuntimeState,
-                                    onInstall = {
+                                    onInstall = { _tier ->
                                         if (distro.id in installedDistros) {
                                             if (distroRuntimeState.desktopRunning) {
                                                 DistroRuntimeService.stopDesktop(context)
@@ -474,7 +475,7 @@ fun AndistroApp() {
                                                 desktopModeDialogVisible = true
                                             }
                                         } else {
-                                            requestInstall(distro.id, selectedDE?.id ?: "xfce")
+                                            requestInstall(distro.id, selectedDE?.id ?: "xfce", _tier)
                                         }
                                     },
                                     onCopyLogs = { copyRuntimeLog(context) },
@@ -1406,7 +1407,7 @@ fun DECard(
 fun DistroDetailScreen(
     distro: Distro,
     selectedDE: DesktopEnvironment? = null,
-    onInstall: () -> Unit,
+    onInstall: (String) -> Unit,
     onCopyLogs: () -> Unit,
     isInstalled: Boolean = false,
     onUninstall: () -> Unit = {},
@@ -1419,6 +1420,7 @@ fun DistroDetailScreen(
     val canInstall = DistroInstallProfiles.get(distro.id) != null &&
         (selectedDE != null && distro.id in selectedDE.recommendedFor && selectedDE.installable || isInstalled || isPaused)
     var uninstallDialogVisible by remember { mutableStateOf(false) }
+    var selectedTier by remember { mutableStateOf("standard") }
     Column(modifier = Modifier.fillMaxSize()) {
         // Hero banner in brand color
         Box(
@@ -1588,9 +1590,22 @@ fun DistroDetailScreen(
             }
 
             Spacer(modifier = Modifier.weight(1f))
+            if (!isInstalled && canInstall) {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf("minimal", "standard", "full").forEach { tier ->
+                        FilterChip(
+                            selected = selectedTier == tier,
+                            onClick = { selectedTier = tier },
+                            label = { Text(tier.replaceFirstChar { it.uppercase() }) }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = onInstall,
+                onClick = { onInstall(selectedTier) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = canInstall && !runtimeState.installing,
                 colors = ButtonDefaults.buttonColors(

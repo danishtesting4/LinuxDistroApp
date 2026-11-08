@@ -84,6 +84,7 @@ class DistroRuntimeService : Service() {
         private const val EXTRA_DISPLAY_MODE = "display_mode"
     private const val EXTRA_DISTRO_ID = "distro_id"
     private const val EXTRA_DE_ID = "desktop_environment_id"
+    private const val EXTRA_TIER_ID = "install_tier"
         const val TERMUX_X11_PACKAGE = "com.termux.x11"
         // SHA-256 of the certificate in Termux:X11's upstream debug signing keystore.
         private const val TERMUX_X11_CERT_SHA256 =
@@ -108,12 +109,12 @@ class DistroRuntimeService : Service() {
             "dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3"
         )
 
-        fun install(context: Context, distroId: String = "debian", desktopEnvironment: String = "xfce"): Boolean {
+        fun install(context: Context, distroId: String = "debian", desktopEnvironment: String = "xfce", tier: String = "standard"): Boolean {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val powerManager = context.getSystemService(PowerManager::class.java)
                 if (!powerManager.isIgnoringBatteryOptimizations(context.packageName)) return false
             }
-            start(context, ACTION_INSTALL, distroId = distroId, desktopEnvironment = desktopEnvironment)
+            start(context, ACTION_INSTALL, distroId = distroId, desktopEnvironment = desktopEnvironment, tier = tier)
             return true
         }
 
@@ -121,7 +122,8 @@ class DistroRuntimeService : Service() {
             context: Context,
             distroId: String = "debian",
             displayMode: DesktopDisplayMode = DesktopDisplayMode.IN_APP_VNC,
-            desktopEnvironment: String? = null
+            desktopEnvironment: String? = null,
+            tier: String? = null
         ) = start(context, ACTION_START_DESKTOP, displayMode, distroId, desktopEnvironment)
 
         fun stopDesktop(context: Context) = start(context, ACTION_STOP_DESKTOP)
@@ -165,12 +167,14 @@ class DistroRuntimeService : Service() {
             action: String,
             displayMode: DesktopDisplayMode? = null,
             distroId: String? = null,
-            desktopEnvironment: String? = null
+            desktopEnvironment: String? = null,
+            tier: String? = null
         ) {
             val intent = Intent(context, DistroRuntimeService::class.java).setAction(action)
             displayMode?.let { intent.putExtra(EXTRA_DISPLAY_MODE, it.id) }
             distroId?.let { intent.putExtra(EXTRA_DISTRO_ID, it) }
             desktopEnvironment?.let { intent.putExtra(EXTRA_DE_ID, it) }
+            tier?.let { intent.putExtra(EXTRA_TIER_ID, it) }
             if (action == ACTION_STOP_DESKTOP) {
                 context.startService(intent)
                 return
@@ -194,6 +198,7 @@ class DistroRuntimeService : Service() {
     private lateinit var loader: File
     private var currentDistroId = "debian"
     private var currentDesktopEnvironment = "xfce"
+    private var currentInstallTier = "standard"
 
     override fun onCreate() {
         super.onCreate()
@@ -208,6 +213,7 @@ class DistroRuntimeService : Service() {
             ACTION_INSTALL -> {
                 val distroId = intent.getStringExtra(EXTRA_DISTRO_ID) ?: "debian"
                 val desktopEnvironment = intent.getStringExtra(EXTRA_DE_ID) ?: "xfce"
+                val installTier = intent.getStringExtra(EXTRA_TIER_ID) ?: "standard"
                 val profile = DistroInstallProfiles.get(distroId)
                 if (profile == null) {
                     DistroRuntimeState.state.value = DistroRuntimeState.state.value.copy(
@@ -234,6 +240,7 @@ class DistroRuntimeService : Service() {
                 }
                 currentDistroId = distroId
                 currentDesktopEnvironment = desktopEnvironment
+                currentInstallTier = installTier
                 rootfs = File(filesDir, "$distroId/rootfs")
                 DistroRuntimeState.state.value = RuntimeUiState(
                 message = "Preparing $distroId + $desktopEnvironment",
@@ -586,7 +593,7 @@ class DistroRuntimeService : Service() {
         configureDistro()
         val commands = listOfNotNull(
             profile.preInstallCommand.takeIf(String::isNotBlank),
-            "${profile.installCommand} ${profile.packagesFor(currentDesktopEnvironment).joinToString(" ")}"
+            "${profile.installCommand} ${profile.packagesFor(currentDesktopEnvironment, currentInstallTier).joinToString(" ")}"
         )
         runProot(
             listOf(
@@ -616,7 +623,7 @@ class DistroRuntimeService : Service() {
         check(hasVncPasswordUtility()) {
             "${profile.id} package setup finished without installing a VNC password utility."
         }
-        completeMarker.writeText("${profile.id}-$currentDesktopEnvironment\n")
+        completeMarker.writeText("${profile.id}-$currentDesktopEnvironment-$currentInstallTier\n")
         stagedMarker.delete()
         DistroRuntimeState.state.value = RuntimeUiState(
             message = "${profile.id} + minimal XFCE is installed",
